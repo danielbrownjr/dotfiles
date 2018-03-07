@@ -3,6 +3,9 @@
 " Author: Daniel R Brown Jr.
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Basic setup
+set nocompatible
+filetype off
 
 " Remap options
 " Map leader
@@ -22,3 +25,17 @@
 
 " Asthetic improvements
 :set relativenumber
+
+"PLUGINS"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vundle plugin manager
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+
+" Insert plugins here
+Plugin 'w0rp/ale'
+
+call vundle#end()
+filetype plugin indent on
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
