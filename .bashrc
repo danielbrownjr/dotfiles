@@ -207,7 +207,7 @@ alias sha1='openssl sha1'
 # SPECIAL FUNCTIONS
 #######################################################
 
-# Use the best version of pico installed
+# Always use vim because reasons
 edit ()
 {
 	vim "$@"
@@ -295,6 +295,16 @@ mvg ()
 	fi
 }
 
+# Import colorscheme from 'wal' asunchronously
+(cat ~/.cache/wal/sequences &)
+
+# wal function
+wal-fill()
+{
+	wal -n -i "$@"
+	feh --bg-fill "$(< "${HOME}/.cache/wal/wal")"
+}
+	
 # Create and go to the directory
 mkdirg ()
 {

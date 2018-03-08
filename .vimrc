@@ -20,6 +20,8 @@ filetype off
 :noremap <leader>eb :split ~/.bashrc<cr>
 " Source new .vimrc on the fly
 :noremap <leader>sv :source $MYVIMRC<cr>
+" edit i3 config easily
+:noremap <leader>ei3 :split ~/.config/i3/config<cr>
 " Swap between splits easily
 :noremap <leader>w <c-w>w
 
