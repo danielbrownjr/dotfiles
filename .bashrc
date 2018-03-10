@@ -51,6 +51,7 @@ if [[ $iatest > 0 ]]; then bind "set show-all-if-ambiguous On"; fi
 # Set the default editor
 export EDITOR=vim
 export VISUAL=vim
+export PATH=$PATH:$HOME/.local/bin
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
