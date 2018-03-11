@@ -25,18 +25,14 @@ q <- function (save="no", ...) {
 # allows for tab-completion of package names
 utils::rc.settings(ipck=TRUE)
 
-# use colorout library on rxvt
-if(Sys.getenv("TERM") == "rxvt-unicode-256color") {
-	library("colorout")
-}
-
+# Ignore.warnings r function
 ignore.warnings <- function(a.package) {
 	suppressWarnings(suppressPackageStartupMessages(
 							library(a.package, character.only=TRUE)))
 }
 
 # Autoloads packages and ignores warnings
-auto.loads <- c("tidyverse", "qcc")
+auto.loads <- c("tidyverse")
 if(interactive()){
 	invisible(sapply(auto.loads, ignore.warnings))
 }
