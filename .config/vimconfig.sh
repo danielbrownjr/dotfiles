@@ -2,7 +2,7 @@
 # Script for configuring vim for initial install
 name="ChaseAfterStart"
 pydir="/usr/lib/python2.7/config-x86_64-linux-gnu"
-py3dir="/usr/lib/python3.4/config-3.4m-x86_64-linux-gnu"
+py3dir="/usr/lib/python3.6/config-3.6m-x86_64-linux-gnu"
 read -e -i "$name" -p "Please enter the name of the person compiling Vim: "
 echo
 read -e -i "$pydir" -p "Please enter the path to your python config directory: " pyinput
