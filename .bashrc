@@ -76,8 +76,19 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 # Alias's for SSH
 # alias SERVERNAME='ssh dbrown@users.cs.umb.edu'
 
-# Alias's to change the directory
-alias web='cd /var/www/html'
+# Alias for attaching in tmux
+alias attach='tmux attach -t'
+tmux() {
+    if [[ $@ == "list" ]]; then
+         command tmux list-sessions | more
+    elif [[ $@ == "pacman" ]]; then
+	 command tmux attach -t pacman | more
+    elif [[ $@ == "terminal" ]]; then
+	 command tmux attach -t terminal | more
+    else
+        command tmux "$@"
+    fi
+}
 
 # Alias's to mount ISO files
 # mount -o loop /home/NAMEOFISO.iso /home/ISOMOUNTDIR/
@@ -177,10 +188,6 @@ alias ipview="netstat -anpl | grep :80 | awk {'print \$5'} | cut -d\":\" -f1 | s
 
 # Show open ports
 alias openports='netstat -nape --inet'
-
-# Aliases for safe and forced reboots
-alias rebootsafe='sudo shutdown -r now'
-alias rebootforce='sudo shutdown -r -n now'
 
 # Aliases to show disk space and space used in a folder
 alias diskspace="du -S | sort -n -r |more"
