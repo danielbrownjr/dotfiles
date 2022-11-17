@@ -21,7 +21,7 @@ noremap <leader>eb :split ~/.bashrc<cr>
 " Source new .vimrc on the fly
 noremap <leader>sv :source $MYVIMRC<cr>
 " edit i3 config easily
-noremap <leader>ei3 :split ~/.config/i3/config<cr>
+" noremap <leader>ei3 :split ~/.config/i3/config<cr>
 " Swap between splits easily
 noremap <leader>w <c-w>w
 
@@ -29,22 +29,5 @@ noremap <leader>w <c-w>w
 set relativenumber
 syntax on
 
-" Airline Stuff
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
 
-"PLUGINS"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vundle plugin manager
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-
-" Insert plugins here
-Plugin 'w0rp/ale'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
-call vundle#end()
-filetype plugin indent on
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
