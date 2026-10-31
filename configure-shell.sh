@@ -46,4 +46,6 @@ fi
 cp "$ROOT/config/work.zsh" "$HOME/.config/zsh/work.zsh"
 append_block "$HOME/.zshrc" '# macbook-setup: project navigation' '# macbook-setup: project navigation
 [[ -r "$HOME/.config/zsh/work.zsh" ]] && source "$HOME/.config/zsh/work.zsh"'
+append_block "$HOME/.zshrc" '# macbook-setup: Rust' '# macbook-setup: Rust
+[[ -r "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"'
 /bin/zsh -n "$HOME/.zprofile" "$HOME/.zshrc"

@@ -99,3 +99,10 @@ Open a fresh zsh session or run `source ~/.zshrc` after setup.
 
 Set `WORK_ROOT` locally to use another projects directory. The installed function
 is `~/.config/zsh/work.zsh`, restored from `config/work.zsh`.
+
+## Rust learning environment
+
+Install the native stable toolchain using rustup from https://rustup.rs with
+its minimal profile (rustc, Cargo and standard library). The shell restore
+loads `~/.cargo/env` when present. Rust toolchains are managed by rustup,
+not Homebrew; update deliberately with `rustup update stable`.
