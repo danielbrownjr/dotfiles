@@ -39,4 +39,11 @@ if command -v fzf >/dev/null 2>&1; then
   export FZF_DEFAULT_OPTS='\''--height=40% --layout=reverse --border=rounded'\''
   source <(fzf --zsh)
 fi'
+mkdir -p "$HOME/.config/zsh"
+if [[ -e "$HOME/.config/zsh/work.zsh" ]]; then
+  cp -p "$HOME/.config/zsh/work.zsh" "$HOME/.config/zsh/work.zsh.backup-$STAMP"
+fi
+cp "$ROOT/config/work.zsh" "$HOME/.config/zsh/work.zsh"
+append_block "$HOME/.zshrc" '# macbook-setup: project navigation' '# macbook-setup: project navigation
+[[ -r "$HOME/.config/zsh/work.zsh" ]] && source "$HOME/.config/zsh/work.zsh"'
 /bin/zsh -n "$HOME/.zprofile" "$HOME/.zshrc"

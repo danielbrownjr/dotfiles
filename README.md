@@ -85,3 +85,17 @@ than an exact binary snapshot. No Homebrew services are enabled by these scripts
 dotenv files, histories and the generated setup log. It is a guardrail, not a
 secret scanner. Review changes before committing. Credentials, SSH configuration,
 NAS deployment details and machine audit logs are intentionally kept local.
+
+## Project navigation
+
+Open a fresh zsh session or run `source ~/.zshrc` after setup.
+
+- `work`: fuzzy-select an immediate subdirectory of `~/Documents/Projects`, then
+  change to it in the current shell.
+- `work badge`: start the picker with a search already entered.
+- `work -e`: select a project, change directory and open it in VS Code.
+- Escape cancels without changing directory. Projects are discovered each time;
+  no index or background service is used.
+
+Set `WORK_ROOT` locally to use another projects directory. The installed function
+is `~/.config/zsh/work.zsh`, restored from `config/work.zsh`.
