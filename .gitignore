@@ -1,0 +1,18 @@
+# Local backups and machine-specific evidence are never source configuration.
+backups/
+*.backup-*
+*.png
+*.jpg
+.DS_Store
+# Credentials, histories and SSH identities must never enter this project.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_*
+*_history
+.ssh/
+
+# Generated local audit log; never publish.
+setup-log.md

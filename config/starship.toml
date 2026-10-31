@@ -1,0 +1,23 @@
+format = '$directory$git_branch$cmd_duration$line_break$character'
+add_newline = true
+command_timeout = 500
+
+[directory]
+style = 'bold #89b4fa'
+truncation_length = 3
+truncate_to_repo = true
+read_only = ' (read-only)'
+
+[git_branch]
+symbol = 'git:'
+format = '[$symbol$branch]($style) '
+style = '#cba6f7'
+
+[cmd_duration]
+min_time = 2000
+format = '[took $duration]($style) '
+style = '#f9e2af'
+
+[character]
+success_symbol = '[❯](bold #a6e3a1)'
+error_symbol = '[❯](bold #f38ba8)'

@@ -1,0 +1,63 @@
+#!/bin/bash
+# Flash one RP2040/RP2350 in BOOTSEL mode without a mounted UF2 volume.
+set -euo pipefail
+dry_run=false
+if [[ "${1:-}" == --dry-run ]]; then dry_run=true; shift; fi
+if [[ $# -ne 1 || "${1:-}" == --help || "${1:-}" == -h ]]; then
+  printf 'Usage: pflash [--dry-run] firmware.uf2\nConnect exactly one board in BOOTSEL mode first.\n'
+  [[ "${1:-}" == --help || "${1:-}" == -h ]] && exit 0
+  exit 2
+fi
+firmware="$1"
+if [[ ! -f "$firmware" || ! -r "$firmware" ]]; then
+  printf 'Firmware is not a readable file: %s\n' "$firmware" >&2
+  exit 1
+fi
+case "$firmware" in
+  /*) ;;
+  *) firmware="$PWD/$firmware" ;;
+esac
+picotool="$(command -v picotool || true)"
+if [[ -z "$picotool" && -x /opt/homebrew/bin/picotool ]]; then
+  picotool=/opt/homebrew/bin/picotool
+fi
+if [[ -z "$picotool" ]]; then
+  printf 'picotool is not installed or available on PATH.\n' >&2
+  exit 1
+fi
+# Parse the file first. Do not touch disks for an unreadable/invalid image.
+"$picotool" info "$firmware" >/dev/null
+device_info="$("$picotool" info -d)"
+count="$(printf '%s\n' "$device_info" | /usr/bin/awk '$1=="type:" && $2 ~ /^RP(2040|2350)$/ {n++} END {print n+0}')"
+if [[ "$count" != 1 ]]; then
+  printf 'Expected exactly one RP2040/RP2350 in BOOTSEL mode; found %s.\n' "$count" >&2
+  exit 1
+fi
+mounts() {
+  /sbin/mount | /usr/bin/awk '/ on \/Volumes\/(RPI-RP2|RP2350)( [0-9]+)? \(msdos,/ {sub(/^.* on /, ""); sub(/ \(msdos,.*/, ""); print}'
+}
+while IFS= read -r volume; do
+  [[ -n "$volume" ]] || continue
+  if $dry_run; then
+    printf 'Would unmount: %s\n' "$volume"
+    continue
+  fi
+  printf 'Unmounting %s…\n' "$volume"
+  # Tahoe can finish unmounting but leave diskutil waiting for a response.
+  # Bound the client wait, then verify the actual mount table below.
+  /usr/bin/perl -e 'alarm 20; exec @ARGV or die "exec failed: $!"' \
+    /usr/sbin/diskutil unmount "$volume" || true
+done < <(mounts)
+if $dry_run; then
+  printf 'Would flash, verify and boot: '
+  printf '%q ' "$picotool" load -v -x "$firmware"
+  printf '\nDry run: no unmount, flash or reboot performed.\n'
+  exit 0
+fi
+if [[ -n "$(mounts)" ]]; then
+  printf 'A bootloader volume is still mounted; refusing to flash.\n' >&2
+  exit 1
+fi
+# Recheck after unmounting. Never force a running application into BOOTSEL.
+"$picotool" info -d >/dev/null
+exec "$picotool" load -v -x "$firmware"

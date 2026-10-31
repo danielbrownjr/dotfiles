@@ -1,0 +1,63 @@
+" Lean Vim setup for Ghostty, code editing and SSH-oriented workflows.
+set nocompatible
+filetype plugin indent on
+syntax enable
+set encoding=utf-8
+set number relativenumber
+set cursorline
+set signcolumn=yes
+set termguicolors
+set background=dark
+colorscheme habamax
+set laststatus=2
+set ruler
+set showcmd
+set wildmenu
+set wildmode=longest:full,full
+set scrolloff=5
+set sidescrolloff=5
+set splitbelow splitright
+set hidden
+set mouse=
+
+" Search and editing. Filetype indentation may override these defaults.
+set incsearch hlsearch
+set ignorecase smartcase
+set backspace=indent,eol,start
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=-1
+set autoindent
+set undolevels=1000
+set updatetime=300
+set shortmess+=I
+
+" Keep Escape's terminal keycode timeout separate from Insert-mode chords.
+set timeout timeoutlen=250
+set ttimeout ttimeoutlen=50
+inoremap jk <Esc>
+inoremap kj <Esc>
+" Ctrl-[ and Escape are indistinguishable in traditional terminal input.
+" Nonrecursive chords and Ctrl-C still emit Escape without hitting the Nop.
+inoremap <C-c> <Esc>
+noremap <Esc> <Nop>
+noremap! <Esc> <Nop>
+for s:key in ['<Up>', '<Down>', '<Left>', '<Right>']
+    execute 'noremap ' . s:key . ' <Nop>'
+    execute 'noremap! ' . s:key . ' <Nop>'
+endfor
+unlet s:key
+
+" Dash is the leader; press the following keys in sequence in Normal mode.
+let mapleader = '-'
+nnoremap <silent> <leader><Space> :nohlsearch<CR>
+nnoremap <leader>w :write<CR>
+" Edit and reload the active vimrc. Write changes before sourcing it.
+nnoremap <leader>ev :edit $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" macbook-setup: Powerline-style status line
+if filereadable(expand('~/.vim/statusline.vim'))
+    source ~/.vim/statusline.vim
+endif
