@@ -42,7 +42,7 @@ Vim templates replace their live files after backup.
 | `bin/pflash` | `~/.local/bin/pflash` |
 
 Ghostty uses Fira Mono, Catppuccin Mocha, and Control-Space for a centered quick
-terminal at 650 pixels wide and 45% screen height. It starts without a regular
+terminal at 650 pixels wide and 400 pixels high. It starts without a regular
 terminal window. Grant the global shortcut permission locally if macOS requests
 it, and check that Control-Space is not assigned to input-source switching.
 
