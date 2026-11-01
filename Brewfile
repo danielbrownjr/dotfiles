@@ -18,3 +18,6 @@ cask "discord"
 cask "font-fira-mono"
 cask "visual-studio-code"
 cask "vlc"
+
+brew "eza"
+brew "zoxide"

@@ -106,3 +106,11 @@ Install the native stable toolchain using rustup from https://rustup.rs with
 its minimal profile (rustc, Cargo and standard library). The shell restore
 loads `~/.cargo/env` when present. Rust toolchains are managed by rustup,
 not Homebrew; update deliberately with `rustup update stable`.
+
+## Everyday terminal helpers
+
+`keys` prints the keyboard and navigation cheat sheet on demand. `z <fragment>`
+jumps to a directory learned from visits; `zi` opens its fuzzy picker. zoxide
+stores its directory database locally. `ll` and `la` use eza for detailed
+listings, and `lt` shows a two-level tree. The standard `ls` is unchanged.
+These helpers are restored from `config/terminal-tools.zsh`; no service is used.

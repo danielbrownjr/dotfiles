@@ -48,4 +48,10 @@ append_block "$HOME/.zshrc" '# macbook-setup: project navigation' '# macbook-set
 [[ -r "$HOME/.config/zsh/work.zsh" ]] && source "$HOME/.config/zsh/work.zsh"'
 append_block "$HOME/.zshrc" '# macbook-setup: Rust' '# macbook-setup: Rust
 [[ -r "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"'
+if [[ -e "$HOME/.config/zsh/terminal-tools.zsh" ]]; then
+  cp -p "$HOME/.config/zsh/terminal-tools.zsh" "$HOME/.config/zsh/terminal-tools.zsh.backup-$STAMP"
+fi
+cp "$ROOT/config/terminal-tools.zsh" "$HOME/.config/zsh/terminal-tools.zsh"
+append_block "$HOME/.zshrc" '# macbook-setup: terminal tools' '# macbook-setup: terminal tools
+[[ -r "$HOME/.config/zsh/terminal-tools.zsh" ]] && source "$HOME/.config/zsh/terminal-tools.zsh"'
 /bin/zsh -n "$HOME/.zprofile" "$HOME/.zshrc"
