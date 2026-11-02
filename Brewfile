@@ -23,3 +23,5 @@ brew "eza"
 brew "zoxide"
 
 brew "tmux"
+
+cask "codex"
