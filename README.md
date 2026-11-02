@@ -127,3 +127,13 @@ terminal closure, not reboot. For remote jobs, run tmux on the remote host;
 this bootstrap installs it only on the Mac.
 
 Restore with `bash configure-tmux.sh`; reload an existing server using prefix+r.
+
+## Development window template
+
+Run `devlayout` from a project, or `devlayout /path/to/project`. It creates a
+fresh tmux window with Vim at top left (70% width), a companion shell at top
+right displaying `keys`, and a full-width command shell below (28% height).
+Every pane starts in the project directory. Outside tmux it creates or joins
+session `dev`; inside tmux it adds a window to the current session. Every call
+creates a new window, leaving existing work intact. Quit Vim normally before
+repurposing its pane. Use prefix+z to temporarily maximize a pane.

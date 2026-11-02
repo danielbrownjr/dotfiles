@@ -54,4 +54,9 @@ fi
 cp "$ROOT/config/terminal-tools.zsh" "$HOME/.config/zsh/terminal-tools.zsh"
 append_block "$HOME/.zshrc" '# macbook-setup: terminal tools' '# macbook-setup: terminal tools
 [[ -r "$HOME/.config/zsh/terminal-tools.zsh" ]] && source "$HOME/.config/zsh/terminal-tools.zsh"'
+mkdir -p "$HOME/.local/bin"
+if [[ -e "$HOME/.local/bin/devlayout" ]]; then
+  cp -p "$HOME/.local/bin/devlayout" "$HOME/.local/bin/devlayout.backup-$STAMP"
+fi
+install -m 755 "$ROOT/bin/devlayout" "$HOME/.local/bin/devlayout"
 /bin/zsh -n "$HOME/.zprofile" "$HOME/.zshrc"

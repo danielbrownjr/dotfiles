@@ -30,6 +30,7 @@ NAVIGATION AND FILES
   keys           Show this reminder
 
 TMUX (press Ctrl+B, release, then the next key)
+  devlayout [dir]   New editor / companion / terminal layout
   tmux new -As dev   Create or attach to your dev session
   | / -             Split side-by-side / top-and-bottom
   h j k l           Move between panes

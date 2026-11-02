@@ -1,0 +1,33 @@
+#!/bin/bash
+# A fresh development window; existing windows and sessions are preserved.
+set -euo pipefail
+if [[ $# -gt 1 || "${1:-}" == --help || "${1:-}" == -h ]]; then
+  echo 'Usage: devlayout [project-directory]'
+  echo 'Creates a new three-pane window: Vim, keys reminder, command shell.'
+  exit 0
+fi
+project="$(cd "${1:-$PWD}" && pwd)"
+command -v tmux >/dev/null || { echo 'tmux is required.' >&2; exit 1; }
+command -v vim >/dev/null || { echo 'vim is required.' >&2; exit 1; }
+attach=false
+if [[ -n "${TMUX:-}" ]]; then
+  top=$(tmux new-window -P -F '#{pane_id}' -n code -c "$project")
+elif tmux has-session -t '=dev' 2>/dev/null; then
+  top=$(tmux new-window -t '=dev:' -P -F '#{pane_id}' -n code -c "$project")
+  attach=true
+else
+  cols=$(tput cols 2>/dev/null || echo 120)
+  rows=$(tput lines 2>/dev/null || echo 40)
+  top=$(tmux new-session -d -s dev -n code -x "$cols" -y "$rows" -P -F '#{pane_id}' -c "$project")
+  attach=true
+fi
+# Split the full-width bottom first, then divide only the upper area.
+bottom=$(tmux split-window -t "$top" -v -l 28% -c "$project" -P -F '#{pane_id}')
+right=$(tmux split-window -t "$top" -h -l 30% -c "$project" -P -F '#{pane_id}')
+tmux select-pane -t "$top" -T Editor
+tmux select-pane -t "$right" -T Companion
+tmux select-pane -t "$bottom" -T Terminal
+tmux send-keys -t "$top" 'vim .' Enter
+tmux send-keys -t "$right" 'if command -v keys >/dev/null 2>&1; then keys; else printf "Companion pane: run btop, logs, or another command here.\n"; fi' Enter
+tmux select-pane -t "$top"
+if $attach; then exec tmux attach-session -t dev; fi
