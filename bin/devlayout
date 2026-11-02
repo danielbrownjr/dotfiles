@@ -1,9 +1,16 @@
 #!/bin/bash
 # A fresh development window; existing windows and sessions are preserved.
 set -euo pipefail
+if [[ "${1:-}" == --hint ]]; then
+  printf '%s\n' 'DEV WORKSPACE' '' 'Ctrl+B, release, then:' \
+    'h j k l   Move pane' '| / -     Split pane' 'z         Zoom / restore' \
+    'd         Detach' '?         All bindings' '' \
+    'Bottom: builds, tests, Git' 'Here: btop, logs, or codex' 'keys: full cheat sheet'
+  exit 0
+fi
 if [[ $# -gt 1 || "${1:-}" == --help || "${1:-}" == -h ]]; then
   echo 'Usage: devlayout [project-directory]'
-  echo 'Creates a new three-pane window: Vim, keys reminder, command shell.'
+  echo 'Creates a new three-pane window: Vim, compact reminder, command shell.'
   exit 0
 fi
 project="$(cd "${1:-$PWD}" && pwd)"
@@ -27,7 +34,14 @@ right=$(tmux split-window -t "$top" -h -l 30% -c "$project" -P -F '#{pane_id}')
 tmux select-pane -t "$top" -T Editor
 tmux select-pane -t "$right" -T Companion
 tmux select-pane -t "$bottom" -T Terminal
-tmux send-keys -t "$top" 'vim .' Enter
-tmux send-keys -t "$right" 'if command -v keys >/dev/null 2>&1; then keys; else printf "Companion pane: run btop, logs, or another command here.\n"; fi' Enter
+# Reapply proportions when a client changes the window dimensions.
+# This is scoped to this new window; manual pane-border dragging still works.
+tmux set-hook -w -t "$top" window-resized "resize-pane -t $bottom -y 28% ; resize-pane -t $right -x 30%"
+tmux resize-pane -t "$bottom" -y 28%
+tmux resize-pane -t "$right" -x 30%
+tmux send-keys -t "$top" 'if test -f src/main.rs; then vim src/main.rs; else vim; fi' Enter
+tmux send-keys -t "$right" 'clear; devlayout --hint' Enter
 tmux select-pane -t "$top"
-if $attach; then exec tmux attach-session -t dev; fi
+if $attach; then
+  exec tmux attach-session -t dev \; resize-pane -t "$bottom" -y 28% \; resize-pane -t "$right" -x 30%
+fi

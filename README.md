@@ -132,7 +132,9 @@ Restore with `bash configure-tmux.sh`; reload an existing server using prefix+r.
 
 Run `devlayout` from a project, or `devlayout /path/to/project`. It creates a
 fresh tmux window with Vim at top left (70% width), a companion shell at top
-right displaying `keys`, and a full-width command shell below (28% height).
+right displaying a compact reminder, and a full-width command shell below (28% height).
+Rust projects open `src/main.rs` automatically; otherwise Vim opens an empty buffer.
+Proportions are reapplied when the terminal window changes size.
 Every pane starts in the project directory. Outside tmux it creates or joins
 session `dev`; inside tmux it adds a window to the current session. Every call
 creates a new window, leaving existing work intact. Quit Vim normally before
