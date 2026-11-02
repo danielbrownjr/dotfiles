@@ -29,6 +29,17 @@ NAVIGATION AND FILES
   lt             Directory tree, two levels deep
   keys           Show this reminder
 
+TMUX (press Ctrl+B, release, then the next key)
+  tmux new -As dev   Create or attach to your dev session
+  | / -             Split side-by-side / top-and-bottom
+  h j k l           Move between panes
+  c / n / p         New / next / previous window
+  z                 Toggle pane zoom
+  d                 Detach, keeping programs running
+  [                 Scroll/copy mode; q exits
+  ?                 All key bindings
+  tmux attach -t dev   Return after detaching
+
 VIM (Normal mode; jk or kj exits Insert mode)
   -ev / -sv      Edit / reload vimrc
   -w             Save file

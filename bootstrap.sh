@@ -23,12 +23,13 @@ note 'Installed or verified all packages declared in Brewfile.'
 /bin/bash "$ROOT/configure-shell.sh"
 /bin/bash "$ROOT/configure-appearance.sh"
 /bin/bash "$ROOT/configure-vim.sh"
+/bin/bash "$ROOT/configure-tmux.sh"
 mkdir -p "$HOME/.local/bin"
 if [[ -e "$HOME/.local/bin/pflash" ]]; then
   cp -p "$HOME/.local/bin/pflash" "$HOME/.local/bin/pflash.backup-$(date +%Y%m%d-%H%M%S)-$$"
 fi
 install -m 755 "$ROOT/bin/pflash" "$HOME/.local/bin/pflash"
 git --version
-for tool in gh rg fd fzf bat btop starship uv ffmpeg picotool vim; do command -v "$tool"; done
+for tool in gh rg fd fzf bat btop starship uv ffmpeg picotool vim tmux; do command -v "$tool"; done
 /bin/zsh -lic 'whence -w compdef; print -r -- "History limit: $SAVEHIST"; command -v brew rg'
 note 'Batch verification passed; Git available, package commands found, fresh zsh loaded.'

@@ -114,3 +114,16 @@ jumps to a directory learned from visits; `zi` opens its fuzzy picker. zoxide
 stores its directory database locally. `ll` and `la` use eza for detailed
 listings, and `lt` shows a two-level tree. The standard `ls` is unchanged.
 These helpers are restored from `config/terminal-tools.zsh`; no service is used.
+
+## tmux
+
+Run `tmux new -As dev` to create or attach to a persistent local session.
+Prefix is Control-B: press and release it, then press the action key. Use `|`
+for side-by-side panes, `-` for stacked panes, h/j/k/l to navigate, c for a new
+window, z to zoom, d to detach, and ? for help. `keys` has a reminder too.
+Mouse scrolling and pane selection are enabled. No plugins or automatic shell
+attachment. tmux runs only while its server has sessions. Sessions survive
+terminal closure, not reboot. For remote jobs, run tmux on the remote host;
+this bootstrap installs it only on the Mac.
+
+Restore with `bash configure-tmux.sh`; reload an existing server using prefix+r.

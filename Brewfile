@@ -21,3 +21,5 @@ cask "vlc"
 
 brew "eza"
 brew "zoxide"
+
+brew "tmux"
