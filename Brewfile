@@ -25,3 +25,5 @@ brew "zoxide"
 brew "tmux"
 
 cask "codex"
+
+cask "claude-code"

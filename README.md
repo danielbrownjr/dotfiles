@@ -139,3 +139,17 @@ Every pane starts in the project directory. Outside tmux it creates or joins
 session `dev`; inside tmux it adds a window to the current session. Every call
 creates a new window, leaving existing work intact. Quit Vim normally before
 repurposing its pane. Use prefix+z to temporarily maximize a pane.
+
+### Named layout sessions
+
+`devlayout bonerjamb` creates a new window in session `bonerjamb`, using the
+current directory. If the session exists, its existing windows stay intact.
+Inside tmux, a named call switches the client to the named session; without a
+name it adds a window to the current session as before. Use `devlayout NAME DIR`
+or `devlayout --session NAME --dir DIR` to specify both. A single existing
+directory argument retains its original meaning; use `--session` to disambiguate.
+Names allow letters, numbers, hyphens and underscores. Hephaestus's `codexlayout`
+uses the same naming rules, retaining its unrestricted Codex launch.
+
+Claude Code is installed via the Homebrew cask. Run `claude` inside a local repo
+and complete sign-in interactively on first use.

@@ -8,24 +8,43 @@ if [[ "${1:-}" == --hint ]]; then
     'Bottom: builds, tests, Git' 'Here: btop, logs, or codex' 'keys: full cheat sheet'
   exit 0
 fi
-if [[ $# -gt 1 || "${1:-}" == --help || "${1:-}" == -h ]]; then
-  echo 'Usage: devlayout [project-directory]'
-  echo 'Creates a new three-pane window: Vim, compact reminder, command shell.'
-  exit 0
+name=''
+directory="$PWD"
+explicit=false
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --help|-h) echo 'Usage: devlayout [session-name] [project-directory]'; echo 'Also: devlayout --session NAME --dir DIR'; exit 0 ;;
+    --session) [[ $# -ge 2 ]] || exit 2; name="$2"; explicit=true; shift 2 ;;
+    --dir) [[ $# -ge 2 ]] || exit 2; directory="$2"; shift 2 ;;
+    -*) echo "Unknown option: $1" >&2; exit 2 ;;
+    *)
+      if [[ "$explicit" == false && -d "$1" ]]; then
+        directory="$1"; shift
+      elif [[ "$explicit" == false ]]; then
+        name="$1"; explicit=true; shift
+      else
+        directory="$1"; shift
+      fi ;;
+  esac
+done
+if $explicit && [[ ! "$name" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+  echo 'Session names may contain letters, numbers, underscores and hyphens.' >&2
+  exit 2
 fi
-project="$(cd "${1:-$PWD}" && pwd)"
+project="$(cd "$directory" && pwd)"
 command -v tmux >/dev/null || { echo 'tmux is required.' >&2; exit 1; }
 command -v vim >/dev/null || { echo 'vim is required.' >&2; exit 1; }
 attach=false
-if [[ -n "${TMUX:-}" ]]; then
+session="${name:-dev}"
+if [[ -n "${TMUX:-}" ]] && ! $explicit; then
   top=$(tmux new-window -P -F '#{pane_id}' -n code -c "$project")
-elif tmux has-session -t '=dev' 2>/dev/null; then
-  top=$(tmux new-window -t '=dev:' -P -F '#{pane_id}' -n code -c "$project")
+elif tmux has-session -t "=$session" 2>/dev/null; then
+  top=$(tmux new-window -t "=$session:" -P -F '#{pane_id}' -n code -c "$project")
   attach=true
 else
   cols=$(tput cols 2>/dev/null || echo 120)
   rows=$(tput lines 2>/dev/null || echo 40)
-  top=$(tmux new-session -d -s dev -n code -x "$cols" -y "$rows" -P -F '#{pane_id}' -c "$project")
+  top=$(tmux new-session -d -s "$session" -n code -x "$cols" -y "$rows" -P -F '#{pane_id}' -c "$project")
   attach=true
 fi
 # Split the full-width bottom first, then divide only the upper area.
@@ -43,5 +62,12 @@ tmux send-keys -t "$top" 'if test -f src/main.rs; then vim src/main.rs; else vim
 tmux send-keys -t "$right" 'clear; devlayout --hint' Enter
 tmux select-pane -t "$top"
 if $attach; then
-  exec tmux attach-session -t dev \; resize-pane -t "$bottom" -y 28% \; resize-pane -t "$right" -x 30%
+  if [[ -n "${TMUX:-}" ]]; then
+    # run-shell can also invoke this without any attached client (smoke tests).
+    if [[ -n "$(tmux display-message -p '#{client_name}')" ]]; then
+      tmux switch-client -t "=$session"
+    fi
+  else
+    exec tmux attach-session -t "=$session" \; resize-pane -t "$bottom" -y 28% \; resize-pane -t "$right" -x 30%
+  fi
 fi
