@@ -30,6 +30,10 @@ NAVIGATION AND FILES
   keys           Show this reminder
 
 TMUX (press Ctrl+B, release, then the next key)
+  tmux ls                 List sessions
+  tmux attach -t NAME     Attach to named session (outside tmux)
+  tmux switch-client -t NAME   Switch sessions (inside tmux)
+  s (after Ctrl+B)        Interactive session picker
   devlayout [dir]   New editor / companion / terminal layout
   tmux new -As dev   Create or attach to your dev session
   | / -             Split side-by-side / top-and-bottom
